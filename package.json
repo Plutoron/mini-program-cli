@@ -16,6 +16,10 @@
     "cli",
     "template"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/suyunlongsy/init-mini.git"
+  },
   "dependencies": {
     "commander": "^2.19.0"
   }
