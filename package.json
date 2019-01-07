@@ -18,7 +18,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/suyunlongsy/init-mini.git"
+    "url": "git+https://github.com/suyunlongsy/mini-cli.git"
   },
   "dependencies": {
     "chalk": "^2.4.1",
