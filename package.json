@@ -1,5 +1,5 @@
 {
-  "name": "init-mini",
+  "name": "mini-cli",
   "version": "1.0.0",
   "description": "初始化小程序",
   "main": "index.js",
@@ -21,6 +21,27 @@
     "url": "git+https://github.com/suyunlongsy/init-mini.git"
   },
   "dependencies": {
-    "commander": "^2.19.0"
-  }
+    "chalk": "^2.4.1",
+    "commander": "^2.19.0",
+    "download-git-repo": "^1.1.0",
+    "fs-extra": "^7.0.1",
+    "ora": "^3.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.6.0",
+    "eslint-loader": "^2.1.0",
+    "eslint-plugin-babel": "^5.2.0",
+    "eslint-plugin-jsx-a11y": "^6.1.1",
+    "eslint-plugin-react": "^7.11.1",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.12.0",
+    "babel-eslint": "^8.2.1"
+  },
+  "files": [
+    ".gitignore",
+    "index.js",
+    "package.json",
+    "README.md",
+    "src"
+  ]
 }
