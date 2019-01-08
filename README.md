@@ -17,3 +17,5 @@ mini page <name> 新增一个 <name> 页面
 ```
 #### github
 欢迎star [github](https://github.com/suyunlongsy/wx-applet-cli.git) 
+
+如果你觉得这个模版有哪些改进的地方，记的提issue。[模版地址](https://github.com/suyunlongsy/mini-template.git)
