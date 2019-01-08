@@ -30,6 +30,7 @@ const addPageToJson = name => {
   const config = jsonfile.readFileSync(`${process.cwd()}/app.json`)
   config.pages.push(`pages/${name}/${name}`)
   jsonfile.writeFileSync(`${process.cwd()}/app.json`, config, {spaces: 2})
+  console.log(chalk.green(`message：成功添加 ${name} 到app.json`))
 }
 
 const dirIsExist = name => fs.pathExistsSync(`${process.cwd()}/pages/${name}`)
@@ -60,6 +61,7 @@ const checkTemplateDir = async name => {
           })
         } else {
           addTempToPages(dir, name)
+          addPageToJson(name)
         }
       } else {
         console.log(chalk.red('error: _template目录为空'))
