@@ -1,7 +1,7 @@
 {
-  "name": "mini-cli",
-  "version": "1.0.0",
-  "description": "初始化小程序",
+  "name": "wx-applet-cli",
+  "version": "0.0.1",
+  "description": "小程序初始化模版",
   "main": "index.js",
   "bin": {
     "mini": "./index.js"
@@ -9,7 +9,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "yunlong",
+  "author": "yunlong.syl",
   "license": "MIT",
   "keywords": [
     "mini-program",
@@ -18,7 +18,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/suyunlongsy/mini-cli.git"
+    "url": "git+https://github.com/suyunlongsy/wx-applet-cli.git"
   },
   "dependencies": {
     "chalk": "^2.4.1",
