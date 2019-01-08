@@ -4,6 +4,10 @@ const program = require('commander')
 const path = require('path')
 
 program
+  .version(require('./package').version)
+  .usage('<Command>')
+
+program
   .command('init [name]')
   .description('init program')
   .action((name = false) => require('./src/init')(name))
