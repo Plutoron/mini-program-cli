@@ -3,6 +3,8 @@
 const program = require('commander')
 const path = require('path')
 
+// .version(require('./package').version, '-v --version')
+
 program
   .version(require('./package').version)
   .usage('<Command>')
@@ -15,7 +17,12 @@ program
 program
   .command('page <name>')
   .description('add page')
-  .action(name => require('./src/page')(name))
+  .action(name => require('./src/page-and-mod')(name, 'page'))
+
+program
+  .command('mod <name>')
+  .description('add page')
+  .action(name => require('./src/page-and-mod')(name, 'component'))
 
 program.parse(process.argv)
 
