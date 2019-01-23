@@ -1,6 +1,7 @@
 const exec = require('child_process').exec
 const path = require('path')
 const fs = require('fs')
+const chalk = require('chalk')
 
 const shell = (order, option = {}) => {
   const pro = new Promise((reslove, reject) => {
@@ -15,6 +16,13 @@ const shell = (order, option = {}) => {
   return pro
 }
 
+const rename = (oldName, newName) => {
+  fs.rename(oldName, newName, err => {
+    if (err) console.log(chalk.red('error: ') + err)
+  })
+}
+
 module.exports = {
   shell,
+  rename,
 }
