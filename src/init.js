@@ -48,10 +48,8 @@ const checkDirectory = async (path, name) => {
       }).then(answers => {
         if (answers.cover) {
           name ? fs.emptyDirSync(`${process.cwd()}/${name}`) : fs.emptyDirSync(`${process.cwd()}`)
-          choosePlatform(name) 
-        } else {
-          console.log(chalk.yellow('message：操作已终止'))
         }
+        choosePlatform(name) 
       })
     } else {
       choosePlatform(name)

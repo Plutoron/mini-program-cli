@@ -34,8 +34,8 @@ const addTempToComponents = (dir, name) => {
   dir.map(v => {
     const postfix = v.split('.')[1]
     const sourcePath = `${process.cwd()}/_template/component/${v}`
-    const targetPath = `${process.cwd()}/componennts/${name}/${name}.${postfix}`
-    const ioPath = `${process.cwd()}/componennts/${name}/${v}`
+    const targetPath = `${process.cwd()}/components/${name}/${name}.${postfix}`
+    const ioPath = `${process.cwd()}/components/${name}/${v}`
     try {
       if (v === 'io.js') {
         fs.copySync(sourcePath, ioPath)
