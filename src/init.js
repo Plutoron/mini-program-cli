@@ -1,20 +1,39 @@
 const fs = require('fs-extra')
-const jsonfile = require('jsonfile')
 const inquirer = require('inquirer')
 const ora = require('ora')
 const chalk = require('chalk')
 const download = require('download-git-repo')
 const shell = require('./util').shell
-const git = 'direct:https://github.com/suyunlongsy/mini-template.git'
+const wechatGit = 'direct:https://github.com/suyunlongsy/wechat-mini-template.git'
+const alipayGit = 'direct:https://github.com/suyunlongsy/alipay-mini-template.git'
 const tempFileName = '___templates___'
 const curFileName = process.cwd().split('\/').pop()
 
-// 判断目录是否为空
-const checkDirectory = async (path, name, fn) => {
-  let cover = false
-  const folder = name || path
+const promptList = [{
+  type: 'list',
+  message: '请选择平台:',
+  name: 'platform',
+  choices: [
+    "wechat",
+    "alipay",
+  ],
+}]
 
-  fs.readdir(folder, (err, files) => {
+const choosePlatform = name => {
+  inquirer
+    .prompt(promptList)
+    .then(answers => {
+      if (answers.platform === 'wechat') {
+        downloadGit(name, 'wechat')
+      } else if (answers.platform === 'alipay') {
+        downloadGit(name, 'alipay')
+      }
+    })
+}
+
+// 判断目录是否为空
+const checkDirectory = async (path, name) => {
+  fs.readdir(name || path, (err, files) => {
     if (err && err.code !== 'ENOENT') {
       console.log(chalk.red('error：读取文件夹失败'))
       process.exit(1)
@@ -24,34 +43,27 @@ const checkDirectory = async (path, name, fn) => {
       inquirer.prompt({
         message: '检测到该文件夹下有文件，确定要覆盖吗？',
         type: 'confirm',
-        name: 'confirmCover',
+        name: 'cover',
         default: false,
-      }).then(aws => {
-        cover = aws.confirmCover
-        if (cover) {
+      }).then(answers => {
+        if (answers.cover) {
           name ? fs.emptyDirSync(`${process.cwd()}/${name}`) : fs.emptyDirSync(`${process.cwd()}`)
-          if (fn) fn(name) 
+          choosePlatform(name) 
         } else {
           console.log(chalk.yellow('message：操作已终止'))
         }
       })
     } else {
-      if (fn) fn(name)
+      choosePlatform(name)
     }
   })
-
-  return cover
 }
 
-const fileRename = (oldName, newName) => {
-  fs.rename(oldName, newName, err => {
-    if (err) console.log(chalk.red('error: ') + err)
-  })
-}
-
-const downloadGit = name => {
+const downloadGit = (name, platform) => {
   const loading = ora('初始化ing').start()
   const folder = name || tempFileName
+  const git = platform === 'wechat' ? wechatGit : alipayGit
+
   download(`${git}`, folder, {clone: true}, error => {
     if (!error) {
       if (name) {
@@ -76,7 +88,7 @@ const downloadGit = name => {
 }
 
 const init = name => {
-  checkDirectory(process.cwd(), name, downloadGit)
+  checkDirectory(process.cwd(), name)
 }
 
 module.exports = init
