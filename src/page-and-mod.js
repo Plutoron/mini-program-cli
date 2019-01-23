@@ -2,23 +2,25 @@ const fs = require('fs-extra')
 const jsonfile = require('jsonfile')
 const inquirer = require('inquirer')
 const chalk = require('chalk')
-const shell = require('./util').shell
 
-let curType = undefined
+let curType
 
 const addTempToPages = (dir, name) => {
   dir.map(v => {
     const postfix = v.split('.')[1]
+    const sourcePath = `${process.cwd()}/_template/page/${v}`
+    const targetPath = `${process.cwd()}/pages/${name}/${name}.${postfix}`
+    const ioPath = `${process.cwd()}/pages/${name}/${v}`
     try {
       if (v === 'io.js') {
-        fs.copySync(`${process.cwd()}/_template/page/${v}`, `${process.cwd()}/pages/${name}/${v}`)
+        fs.copySync(sourcePath, ioPath)
         console.log(chalk.green(`message：成功生成 - ${v}`))
       } else {
-        fs.copySync(`${process.cwd()}/_template/page/${v}`, `${process.cwd()}/pages/${name}/${name}.${postfix}`)
+        fs.copySync(sourcePath, targetPath)
         if (postfix === 'json') {
-          const config = jsonfile.readFileSync(`${process.cwd()}/pages/${name}/${name}.${postfix}`)
+          const config = jsonfile.readFileSync(targetPath)
           config.navigationBarTitleText = name
-          jsonfile.writeFileSync(`${process.cwd()}/pages/${name}/${name}.${postfix}`, config, {spaces: 2})
+          jsonfile.writeFileSync(targetPath, config, {spaces: 2})
         }
         console.log(chalk.green(`message：成功生成 - ${name}.${postfix}`))
       }
@@ -31,12 +33,15 @@ const addTempToPages = (dir, name) => {
 const addTempToComponents = (dir, name) => {
   dir.map(v => {
     const postfix = v.split('.')[1]
+    const sourcePath = `${process.cwd()}/_template/component/${v}`
+    const targetPath = `${process.cwd()}/componennts/${name}/${name}.${postfix}`
+    const ioPath = `${process.cwd()}/componennts/${name}/${v}`
     try {
       if (v === 'io.js') {
-        fs.copySync(`${process.cwd()}/_template/component/${v}`, `${process.cwd()}/componennts/${name}/${v}`)
+        fs.copySync(sourcePath, ioPath)
         console.log(chalk.green(`message：成功生成 - ${v}`))
       } else {
-        fs.copySync(`${process.cwd()}/_template/component/${v}`, `${process.cwd()}/componennts/${name}/${name}.${postfix}`)
+        fs.copySync(sourcePath, targetPath)
         console.log(chalk.green(`message：成功生成 - ${name}.${postfix}`))
       }
     } catch (err) {
@@ -62,7 +67,6 @@ const dirIsExist = name => {
   } else if (curType === 'component') {
     return fs.pathExistsSync(`${process.cwd()}/components/${name}`)
   }
-  return false
 }
 
 const checkTemplateDir = async name => {
@@ -78,11 +82,10 @@ const checkTemplateDir = async name => {
           inquirer.prompt({
             message: '检测到已存在该文件夹，确定要覆盖吗？',
             type: 'confirm',
-            name: 'confirmCover',
+            name: 'cover',
             default: false,
-          }).then(aws => {
-            const cover = aws.confirmCover
-            if (cover) {
+          }).then(answers => {
+            if (answers.cover) {
               if (curType === 'page') {
                 addTempToPages(dir, name)
               } else if (curType === 'component') {
