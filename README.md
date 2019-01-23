@@ -24,4 +24,4 @@ mini page <name> 新增一个 <name> 页面
 如果你觉得这个模版有哪些改进的地方，记的提issue。
 
 [wechat模版地址](https://github.com/suyunlongsy/wechat-mini-template.git)
-[alipay模版地址](https://github.com/suyunlongsy/alipayt-mini-template.git)
+[alipay模版地址](https://github.com/suyunlongsy/alipay-mini-template.git)
