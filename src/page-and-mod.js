@@ -5,6 +5,7 @@ const chalk = require('chalk')
 
 let curType
 
+// 添加页面
 const addTempToPages = (dir, name) => {
   dir.map(v => {
     const postfix = v.split('.')[1]
@@ -19,7 +20,8 @@ const addTempToPages = (dir, name) => {
         fs.copySync(sourcePath, targetPath)
         if (postfix === 'json') {
           const config = jsonfile.readFileSync(targetPath)
-          config.navigationBarTitleText = name
+          if (config.navigationBarTitleText) config.navigationBarTitleText = name
+          if (config.defaultTitle) config.defaultTitle = name
           jsonfile.writeFileSync(targetPath, config, {spaces: 2})
         }
         console.log(chalk.green(`message：成功生成 - ${name}.${postfix}`))
@@ -30,6 +32,7 @@ const addTempToPages = (dir, name) => {
   })
 }
 
+// 添加组件
 const addTempToComponents = (dir, name) => {
   dir.map(v => {
     const postfix = v.split('.')[1]
@@ -50,17 +53,20 @@ const addTempToComponents = (dir, name) => {
   })
 }
 
+// 微信小程序下添加 组件到app.json
 const addToJson = name => {
   const config = jsonfile.readFileSync(`${process.cwd()}/app.json`)
   if (curType === 'page') {
     config.pages.push(`pages/${name}/${name}`)
   } else if (curType === 'component') {
+    if (!config.usingComponents) return
     config.usingComponents[name] = `components/${name}/${name}`
   }
   jsonfile.writeFileSync(`${process.cwd()}/app.json`, config, {spaces: 2})
   console.log(chalk.green(`message：成功添加 ${name} 到app.json`))
 }
 
+// 判断目录是否存在
 const dirIsExist = name => {
   if (curType === 'page') {
     return fs.pathExistsSync(`${process.cwd()}/pages/${name}`)
@@ -69,6 +75,7 @@ const dirIsExist = name => {
   }
 }
 
+// 判断模版目录是否存在
 const checkTemplateDir = async name => {
   fs.readdir(`${process.cwd()}/_template/${curType}`, (err, dir) => {
     if (err && err.code !== 'ENOENT') {
