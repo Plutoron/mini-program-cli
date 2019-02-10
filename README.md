@@ -13,11 +13,19 @@ mini init [name] 为在当前目录下的 [name] 目录下初始化项目
 ```
 
 #### `mini page <name>`
-> 新增页面，`<name>` 为必填参数
+> 新增页面至pages目录，`<name>` 为必填参数
 
 ```
 mini page <name> 新增一个 <name> 页面 
 ```
+
+#### `mini mod <name>`
+> 新增组件至components目录，`<name>` 为必填参数
+
+```
+mini page <name> 新增一个 <name> 页面 
+```
+
 #### github
 欢迎star [github](https://github.com/suyunlongsy/mini-program-cli.git) 
 
