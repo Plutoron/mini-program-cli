@@ -3,60 +3,26 @@ const inquirer = require('inquirer')
 const ora = require('ora')
 const chalk = require('chalk')
 const download = require('download-git-repo')
-const shell = require('./util').shell
+const {
+  shell,
+} = require('./util')
+
 const wechatGit = 'direct:https://github.com/suyunlongsy/wechat-mini-template.git'
 const alipayGit = 'direct:https://github.com/suyunlongsy/alipay-mini-template.git'
 const tempFileName = '___templates___'
-const curFileName = process.cwd().split('\/').pop()
+// const curFileName = process.cwd().split('\/').pop()
 
 const promptList = [{
   type: 'list',
   message: '请选择平台:',
   name: 'platform',
   choices: [
-    "wechat",
-    "alipay",
+    'wechat',
+    'alipay',
   ],
 }]
 
-const choosePlatform = name => {
-  inquirer
-    .prompt(promptList)
-    .then(answers => {
-      if (answers.platform === 'wechat') {
-        downloadGit(name, 'wechat')
-      } else if (answers.platform === 'alipay') {
-        downloadGit(name, 'alipay')
-      }
-    })
-}
-
-// 判断目录是否为空
-const checkDirectory = async (path, name) => {
-  fs.readdir(name || path, (err, files) => {
-    if (err && err.code !== 'ENOENT') {
-      console.log(chalk.red('error：读取文件夹失败'))
-      process.exit(1)
-    }
-    // 确认是否覆盖
-    if (!(!files || !files.length)) {
-      inquirer.prompt({
-        message: '检测到该文件夹下有文件，确定要覆盖吗？',
-        type: 'confirm',
-        name: 'cover',
-        default: false,
-      }).then(answers => {
-        if (answers.cover) {
-          name ? fs.emptyDirSync(`${process.cwd()}/${name}`) : fs.emptyDirSync(`${process.cwd()}`)
-        }
-        choosePlatform(name) 
-      })
-    } else {
-      choosePlatform(name)
-    }
-  })
-}
-
+// 下载模版
 const downloadGit = (name, platform) => {
   const loading = ora('初始化ing').start()
   const folder = name || tempFileName
@@ -85,8 +51,49 @@ const downloadGit = (name, platform) => {
   })
 }
 
-const init = name => {
-  checkDirectory(process.cwd(), name)
+// 选择平台
+const choosePlatform = name => {
+  inquirer
+    .prompt(promptList)
+    .then(answers => {
+      if (answers.platform === 'wechat') {
+        downloadGit(name, 'wechat')
+      } else if (answers.platform === 'alipay') {
+        downloadGit(name, 'alipay')
+      }
+    })
 }
+
+// 判断目录是否为空
+const checkDirectory = async (path, name) => {
+  fs.readdir(name || path, (err, files) => {
+    if (err && err.code !== 'ENOENT') {
+      console.log(chalk.red('error：读取文件夹失败'))
+      process.exit(1)
+    }
+    // 确认是否覆盖
+    if (!(!files || !files.length)) {
+      inquirer.prompt({
+        message: '检测到该文件夹下有文件，确定要覆盖吗？',
+        type: 'confirm',
+        name: 'cover',
+        default: false,
+      }).then(answers => {
+        if (answers.cover) {
+          if (name) {
+            fs.emptyDirSync(`${process.cwd()}/${name}`) 
+          } else {
+            fs.emptyDirSync(`${process.cwd()}`)
+          }
+        }
+        choosePlatform(name) 
+      })
+    } else {
+      choosePlatform(name)
+    }
+  })
+}
+
+const init = name => checkDirectory(process.cwd(), name)
 
 module.exports = init

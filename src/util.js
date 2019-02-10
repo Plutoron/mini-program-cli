@@ -1,5 +1,7 @@
-const exec = require('child_process').exec
-const path = require('path')
+const {
+  exec,
+} = require('child_process')
+// const path = require('path')
 const fs = require('fs')
 const chalk = require('chalk')
 
