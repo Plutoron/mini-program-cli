@@ -1,4 +1,4 @@
-### wx-applet-cli
+### mini-program-cli
 初始化小程序开发模版
 
 #### `mini init [name]`
@@ -19,7 +19,7 @@ mini init [name] 为在当前目录下的 [name] 目录下初始化项目
 mini page <name> 新增一个 <name> 页面 
 ```
 #### github
-欢迎star [github](https://github.com/suyunlongsy/wx-applet-cli.git) 
+欢迎star [github](https://github.com/suyunlongsy/mini-program-cli.git) 
 
 如果你觉得这个模版有哪些改进的地方，记的提issue。
 
