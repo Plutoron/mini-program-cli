@@ -98,7 +98,6 @@ const checkTemplateDir = async name => {
               } else if (curType === 'component') {
                 addTempToComponents(dir, name)
               }
-              addToJson(name)
             } else {
               console.log(chalk.yellow('message: 操作已中止'))
             }
