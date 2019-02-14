@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 const program = require('commander')
-const path = require('path')
 
 // .version(require('./package').version, '-v --version')
 
@@ -23,6 +22,11 @@ program
   .command('mod <name>')
   .description('add page')
   .action(name => require('./src/page-and-mod')(name, 'component'))
+
+program
+  .command('rename <type> <newName> <oldName>')
+  .description('rename page/mod')
+  .action((type, newName, oldName) => require('./src/rename')(type, newName, oldName))
 
 program.parse(process.argv)
 
