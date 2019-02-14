@@ -1,21 +1,24 @@
 const fs = require('fs-extra')
 const jsonfile = require('jsonfile')
 const inquirer = require('inquirer')
-const chalk = require('chalk')
+const {
+  log,
+} = require('./util')
 
 let curType
 
 // 添加页面
 const addTempToPages = (dir, name) => {
-  dir.map(v => {
-    const postfix = v.split('.')[1]
-    const sourcePath = `${process.cwd()}/_template/page/${v}`
-    const targetPath = `${process.cwd()}/pages/${name}/${name}.${postfix}`
-    const ioPath = `${process.cwd()}/pages/${name}/${v}`
-    try {
+  try {
+    dir.map(v => {
+      const postfix = v.split('.')[1]
+      const sourcePath = `${process.cwd()}/_template/page/${v}`
+      const targetPath = `${process.cwd()}/pages/${name}/${name}.${postfix}`
+      const ioPath = `${process.cwd()}/pages/${name}/${v}`
+      
       if (v === 'io.js') {
         fs.copySync(sourcePath, ioPath)
-        console.log(chalk.green(`message：成功生成 - ${v}`))
+        log.ok(`成功生成 - ${v}`)
       } else {
         fs.copySync(sourcePath, targetPath)
         if (postfix === 'json') {
@@ -24,54 +27,63 @@ const addTempToPages = (dir, name) => {
           if (config.defaultTitle) config.defaultTitle = name
           jsonfile.writeFileSync(targetPath, config, {spaces: 2})
         }
-        console.log(chalk.green(`message：成功生成 - ${name}.${postfix}`))
+        log.ok(`成功生成 - ${name}.${postfix}`)
       }
-    } catch (err) {
-      console.error(err)
-    }
-  })
+    })
+  } catch (error) {
+    log.sysErr(error)
+  }
 }
 
 // 添加组件
 const addTempToComponents = (dir, name) => {
-  dir.map(v => {
-    const postfix = v.split('.')[1]
-    const sourcePath = `${process.cwd()}/_template/component/${v}`
-    const targetPath = `${process.cwd()}/components/${name}/${name}.${postfix}`
-    const ioPath = `${process.cwd()}/components/${name}/${v}`
-    try {
+  try {
+    dir.map(v => {
+      const postfix = v.split('.')[1]
+      const sourcePath = `${process.cwd()}/_template/component/${v}`
+      const targetPath = `${process.cwd()}/components/${name}/${name}.${postfix}`
+      const ioPath = `${process.cwd()}/components/${name}/${v}`
+      
       if (v === 'io.js') {
         fs.copySync(sourcePath, ioPath)
-        console.log(chalk.green(`message：成功生成 - ${v}`))
+        log.ok(`成功生成 - ${v}`)
       } else {
         fs.copySync(sourcePath, targetPath)
-        console.log(chalk.green(`message：成功生成 - ${name}.${postfix}`))
+        log.ok(`成功生成 - ${name}.${postfix}`)
       }
-    } catch (err) {
-      console.error(err)
-    }
-  })
+    })
+  } catch (error) {
+    log.sysErr(error)
+  }
 }
 
 // 微信小程序下添加 组件到app.json
 const addToJson = name => {
-  const config = jsonfile.readFileSync(`${process.cwd()}/app.json`)
-  if (curType === 'page') {
-    config.pages.push(`pages/${name}/${name}`)
-  } else if (curType === 'component') {
-    if (!config.usingComponents) return
-    config.usingComponents[name] = `components/${name}/${name}`
+  try {
+    const config = jsonfile.readFileSync(`${process.cwd()}/app.json`)
+    if (curType === 'page') {
+      config.pages.push(`pages/${name}/${name}`)
+    } else if (curType === 'component') {
+      if (!config.usingComponents) return
+      config.usingComponents[name] = `components/${name}/${name}`
+    }
+    jsonfile.writeFileSync(`${process.cwd()}/app.json`, config, {spaces: 2})
+    log.ok(`成功添加 ${name} 到app.json`)
+  } catch (error) {
+    log.sysErr(error)
   }
-  jsonfile.writeFileSync(`${process.cwd()}/app.json`, config, {spaces: 2})
-  console.log(chalk.green(`message：成功添加 ${name} 到app.json`))
 }
 
 // 判断目录是否存在
 const dirIsExist = name => {
-  if (curType === 'page') {
-    return fs.pathExistsSync(`${process.cwd()}/pages/${name}`)
-  } else if (curType === 'component') {
-    return fs.pathExistsSync(`${process.cwd()}/components/${name}`)
+  try {
+    if (curType === 'page') {
+      return fs.existsSync(`${process.cwd()}/pages/${name}`)
+    } else if (curType === 'component') {
+      return fs.existsSync(`${process.cwd()}/components/${name}`)
+    }
+  } catch (error) {
+    log.sysErr(error)
   }
 }
 
@@ -79,7 +91,7 @@ const dirIsExist = name => {
 const checkTemplateDir = async name => {
   fs.readdir(`${process.cwd()}/_template/${curType}`, (err, dir) => {
     if (err && err.code !== 'ENOENT') {
-      console.log(chalk.red(`error: 读取_template/${curType}目录失败`))
+      log.error(`读取_template/${curType}目录失败`)
       process.exit(1)
     }
 
@@ -99,7 +111,7 @@ const checkTemplateDir = async name => {
                 addTempToComponents(dir, name)
               }
             } else {
-              console.log(chalk.yellow('message: 操作已中止'))
+              log.warn('操作已中止')
             }
           })
         } else {
@@ -111,10 +123,10 @@ const checkTemplateDir = async name => {
           addToJson(name)
         }
       } else {
-        console.log(chalk.red(`error: _template/${curType}目录为空`))
+        log.error(` _template/${curType}目录为空`)
       }
     } else {
-      console.log(chalk.red(`error: 不存在_template/${curType}目录`))
+      log.err(`不存在_template/${curType}目录`)
     }
   })
 }

@@ -5,6 +5,7 @@ const chalk = require('chalk')
 const download = require('download-git-repo')
 const {
   shell,
+  log,
 } = require('./util')
 
 const wechatGit = 'direct:https://github.com/suyunlongsy/wechat-mini-template.git'
@@ -32,21 +33,21 @@ const downloadGit = (name, platform) => {
     if (!error) {
       if (name) {
         loading.stop()
-        console.log(chalk.green(`message：初始化完毕 - ${folder}`))
+        log.ok(`初始化完毕 - ${folder}`)
         process.exit(1) 
       }
       try {
         fs.copySync(folder, process.cwd())
         shell(`rm -rf ${folder}`)
         loading.stop()
-        console.log(chalk.green('message：初始化完毕'))
+        log.ok('初始化完毕')
       } catch (err) {
         loading.stop()
-        console.log(chalk.red('error: ') + err)
+        log.sysErr(err)
       }
     } else {
       loading.stop()
-      console.log(chalk.red('error: ') + error)
+      log.sysErr(error)
     }
   })
 }
@@ -68,7 +69,7 @@ const choosePlatform = name => {
 const checkDirectory = async (path, name) => {
   fs.readdir(name || path, (err, files) => {
     if (err && err.code !== 'ENOENT') {
-      console.log(chalk.red('error：读取文件夹失败'))
+      log.error('读取文件夹失败')
       process.exit(1)
     }
     // 确认是否覆盖
@@ -80,10 +81,15 @@ const checkDirectory = async (path, name) => {
         default: false,
       }).then(answers => {
         if (answers.cover) {
-          if (name) {
-            fs.emptyDirSync(`${process.cwd()}/${name}`) 
-          } else {
-            fs.emptyDirSync(`${process.cwd()}`)
+          try {
+            if (name) {
+              fs.emptyDirSync(`${process.cwd()}/${name}`) 
+            } else {
+              fs.emptyDirSync(`${process.cwd()}`)
+            }
+          } catch (error) {
+            log.sysErr(error)
+            process.exit(1)
           }
         }
         choosePlatform(name) 

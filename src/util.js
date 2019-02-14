@@ -1,9 +1,7 @@
+const chalk = require('chalk')
 const {
   exec,
 } = require('child_process')
-// const path = require('path')
-const fs = require('fs')
-const chalk = require('chalk')
 
 const shell = (order, option = {}) => {
   const pro = new Promise((reslove, reject) => {
@@ -18,13 +16,22 @@ const shell = (order, option = {}) => {
   return pro
 }
 
-const rename = (oldName, newName) => {
-  fs.rename(oldName, newName, err => {
-    if (err) console.log(chalk.red('error: ') + err)
-  })
+const log = {
+  ok: text => {
+    console.log(`${chalk.green('success: ')}${chalk.cyan(text)}`)
+  },
+  error: text => {
+    console.log(`${chalk.red(`error: ${text}`)}`)
+  },
+  warn: text => {
+    console.log(`${chalk.yellow(`message: ${text}`)}`)
+  },
+  sysErr: error => {
+    console.error(error)
+  },
 }
 
 module.exports = {
   shell,
-  rename,
+  log,
 }
