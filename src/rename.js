@@ -2,6 +2,7 @@ const fs = require('fs-extra')
 const jsonfile = require('jsonfile')
 const {
   log,
+  shell,
 } = require('./util')
 
 let newName
@@ -10,7 +11,7 @@ let oldName
 let oldPath
 let newPath
 
-let typePath
+let pathType
 
 const updateAppJson = () => {
   const appJsonPath = `${process.cwd()}/app.json`
@@ -21,15 +22,15 @@ const updateAppJson = () => {
       usingComponents,
     } = appJson
 
-    if (typePath === 'pages') {
+    if (pathType === 'pages') {
       pages.some((v, i, a) => {
-        if (v === `${typePath}/${oldName}/${oldName}`) {
-          a[i] = `${typePath}/${newName}/${newName}`
+        if (v === `${pathType}/${oldName}/${oldName}`) {
+          a[i] = `${pathType}/${newName}/${newName}`
         }
-        return v === `${typePath}/${oldName}/${oldName}`
+        return v === `${pathType}/${oldName}/${oldName}`
       })
       appJson.pages = pages
-    } else if (typePath === 'components') {
+    } else if (pathType === 'components') {
       if (!usingComponents) return
       let usingComponentsStr = JSON.stringify(usingComponents)
       usingComponentsStr = usingComponentsStr.replace(new RegExp(`${oldName}`, 'gm'), `${newName}`)
@@ -44,17 +45,29 @@ const updateAppJson = () => {
 
 // 读取目录内容
 const renameFun = path => {
+  const tempPath = `${process.cwd()}/${pathType}/_temp`
   try {
+    fs.mkdirSync(tempPath)
     const dir = fs.readdirSync(path)
-    fs.mkdirsSync(`${newPath}`)
+
     dir.map(v => {
+      const name = v.split('.')[0]
       const postfix = v.split('.')[1]
-      if (v !== 'io.js') {
-        fs.copyFileSync(`${path}/${v}`, `${newPath}/${newName}.${postfix}`)
-        log.ok(`message：成功重命名 ${v} -> ${newName}.${postfix}`)
+      if (oldName === name) {
+        fs.copyFileSync(`${path}/${v}`, `${tempPath}/${newName}.${postfix}`)
+        log.ok(`message：成功重命名 ${v} -> _temp/${newName}.${postfix}`)
       }
     }) 
-    updateAppJson()
+
+    shell(`rm -rf ${path}`).then(res => {
+      log.ok(`message：成功删除 ${path}`)
+      fs.copySync(tempPath, newPath)
+      log.ok(`message：成功复制 ${tempPath} -> ${newPath}`)
+      shell(`rm -rf ${tempPath}`).then(res => {
+        log.ok(`message：成功删除 ${tempPath}`)
+        updateAppJson()
+      })
+    })
   } catch (error) {
     log.sysErr(error)    
   }
@@ -71,11 +84,11 @@ const rename = (type, newly, old) => {
   if (type === 'page') {
     oldPath = `${pagePath}/${oldName}`
     newPath = `${pagePath}/${newName}`
-    typePath = 'pages'
+    pathType = 'pages'
   } else if (type === 'mod') {
     oldPath = `${modPath}/${oldName}`
     newPath = `${modPath}/${newName}`
-    typePath = 'components'
+    pathType = 'components'
   } else {
     log.error('<type> 字段 只支持 page/mod')
     process.exit(1)

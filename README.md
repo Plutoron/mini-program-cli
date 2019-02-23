@@ -26,6 +26,13 @@ mini page <name> 新增一个 <name> 页面
 mini page <name> 新增一个 <name> 页面 
 ```
 
+#### `mini rename <type> <name> <oldname>`
+> 重命名页面/组件，`<type>`值为page/mod
+
+```
+mini rename page <name> <oldname> 重命名 <oldname> 页面 为 <name> 
+```
+
 #### github
 欢迎star [github](https://github.com/suyunlongsy/mini-program-cli.git) 
 
