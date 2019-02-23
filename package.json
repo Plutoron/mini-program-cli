@@ -1,6 +1,6 @@
 {
   "name": "@yunlong.syl/mini-program-cli",
-  "version": "0.0.1-alpha2",
+  "version": "0.0.1-alpha3",
   "description": "小程序初始化模版",
   "main": "index.js",
   "bin": {
