@@ -1,7 +1,6 @@
 const fs = require('fs-extra')
 const inquirer = require('inquirer')
 const ora = require('ora')
-const chalk = require('chalk')
 const download = require('download-git-repo')
 const {
   shell,
