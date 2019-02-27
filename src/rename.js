@@ -56,6 +56,9 @@ const renameFun = path => {
       if (oldName === name) {
         fs.copyFileSync(`${path}/${v}`, `${tempPath}/${newName}.${postfix}`)
         log.ok(`message：成功重命名 ${v} -> _temp/${newName}.${postfix}`)
+      } else {
+        fs.copyFileSync(`${path}/${v}`, `${tempPath}/${v}`)
+        log.ok(`message：成功复制 ${v} -> _temp/${v}`)
       }
     }) 
 
