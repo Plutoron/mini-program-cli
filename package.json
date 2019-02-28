@@ -1,6 +1,6 @@
 {
   "name": "@yunlong.syl/mini-program-cli",
-  "version": "0.0.1-alpha6",
+  "version": "0.0.1-alpha7",
   "description": "小程序初始化模版，可初始化 微信/支付宝 小程序",
   "main": "index.js",
   "bin": {
