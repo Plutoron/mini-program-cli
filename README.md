@@ -1,6 +1,9 @@
 ### mini-program-cli
 小程序初始化模版，可初始化 微信/支付宝 小程序
 
+![](https://img.shields.io/npm/dt/@yunlong.syl/mini-program-cli.svg)
+![](https://img.shields.io/npm/l/@yunlong.syl/mini-program-cli.svg)
+
 #### `mini init [name]`
 > 初始化小程序项目 命令，`[name]` 为可选参数
 
