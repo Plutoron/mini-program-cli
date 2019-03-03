@@ -1,3 +1,6 @@
+### 0.0.1-alpha11
+  - package.json repository
+
 ### 0.0.1-alpha10
   - 添加 删除git地址
 
