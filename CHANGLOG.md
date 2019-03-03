@@ -1,3 +1,6 @@
+### 0.0.1-alpha10
+  - 添加 删除git地址
+
 ### 0.0.1-alpha9
   - 添加 update-notifier
 

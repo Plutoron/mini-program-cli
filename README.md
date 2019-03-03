@@ -36,10 +36,10 @@ mini page <name> 新增一个 <name> 页面
 mini rename page <name> <oldname> 重命名 <oldname> 页面 为 <name> 
 ```
 
-#### github
+<!-- #### github
 欢迎star [github](https://github.com/suyunlongsy/mini-program-cli.git) 
 
 如果你觉得这个模版有哪些改进的地方，记的提issue。
 
 [wechat模版地址](https://github.com/suyunlongsy/wechat-mini-template.git)
-[alipay模版地址](https://github.com/suyunlongsy/alipay-mini-template.git)
+[alipay模版地址](https://github.com/suyunlongsy/alipay-mini-template.git) -->
