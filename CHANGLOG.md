@@ -1,3 +1,6 @@
+### 0.0.1-alpha9
+  - 添加 update-notifier
+
 ### 0.0.1-alpha8
   - 更新关键字
   

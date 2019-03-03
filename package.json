@@ -1,6 +1,6 @@
 {
   "name": "@yunlong.syl/mini-program-cli",
-  "version": "0.0.1-alpha8",
+  "version": "0.0.1-alpha9",
   "description": "小程序初始化模版，可初始化 微信/支付宝 小程序",
   "main": "index.js",
   "bin": {
@@ -36,7 +36,8 @@
     "download-git-repo": "^1.1.0",
     "fs-extra": "^7.0.1",
     "inquirer": "^6.2.1",
-    "ora": "^3.0.0"
+    "ora": "^3.0.0",
+    "update-notifier": "^2.5.0"
   },
   "devDependencies": {
     "eslint": "^5.6.0",
