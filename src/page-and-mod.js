@@ -75,17 +75,7 @@ const addToJson = name => {
 }
 
 // 判断目录是否存在
-const dirIsExist = name => {
-  try {
-    if (curType === 'page') {
-      return fs.existsSync(`${process.cwd()}/pages/${name}`)
-    } else if (curType === 'component') {
-      return fs.existsSync(`${process.cwd()}/components/${name}`)
-    }
-  } catch (error) {
-    log.sysErr(error)
-  }
-}
+const dirIsExist = name => fs.existsSync(`${process.cwd()}/${curType}s/${name}`)
 
 // 判断模版目录是否存在
 const checkTemplateDir = async name => {
