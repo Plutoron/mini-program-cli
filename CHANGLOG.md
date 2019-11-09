@@ -1,3 +1,6 @@
+### 1.0.0
+  - 开源啦
+
 ### 0.0.1-alpha11
   - package.json repository
 
